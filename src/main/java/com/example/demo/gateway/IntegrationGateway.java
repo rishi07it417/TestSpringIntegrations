@@ -3,9 +3,11 @@ package com.example.demo.gateway;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 
+import com.example.demo.model.LoanInfo;
+
 @MessagingGateway
 public interface IntegrationGateway {
 
 	@Gateway(requestChannel = "integration.gateway.channel")
-	public String sendMessage(String message);
+	public LoanInfo sendMessage (LoanInfo message);
 }

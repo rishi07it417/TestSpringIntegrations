@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.integration.transformer.ObjectToMapTransformer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +19,8 @@ public class AppController {
 	IntegrationGateway interationGateway;
 	
 	@PostMapping("/processLoan")
-	public String processLoan(@RequestBody LoanInfo loan) {
-		System.out.println(loan.toString());
-		return interationGateway.sendMessage(loan.getLoanNumber());
+	public LoanInfo processLoan(@RequestBody LoanInfo loan) {
+		return interationGateway.sendMessage(loan);
 	}
 	
 	@PostMapping("/processBorrower")
@@ -29,5 +29,6 @@ public class AppController {
 		
 		return "";
 	}
-
+	
+	
 }

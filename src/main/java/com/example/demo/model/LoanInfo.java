@@ -40,6 +40,12 @@ public class LoanInfo {
 	public void setLoanAmount(int loanAmount) {
 		this.loanAmount = loanAmount;
 	}
+
+
+	@Override
+	public String toString() {
+		return "LoanInfo [loanNumber=" + loanNumber + ", loanType=" + loanType + ", loanAmount=" + loanAmount + "]";
+	}
 	
 	
 

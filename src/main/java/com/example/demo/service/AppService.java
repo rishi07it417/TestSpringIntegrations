@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AppService {
 	
-	@ServiceActivator(inputChannel = "integration.gateway.channel")
+	/*@ServiceActivator(inputChannel = "integration.gateway.channel")
 	public void processMessage(Message<String> message) {
 		
 		System.out.println("inside service activator");
@@ -22,6 +22,26 @@ public class AppService {
 		System.out.println(newMessage);
 		
 		replyChannel.send(newMessage);
+	}*/
+	
+	@ServiceActivator(inputChannel = "integration.gateway.process.objectToMap.channel", outputChannel = "integration.gateway.objectToMap.channel")
+	public Message<?> processMapMessage(Message<?> message) {
+		System.out.println("inside processMapMessage service activator:::::");
+		System.out.println(message.getPayload());
+		
+		
+		return message;
+	}
+	
+	@ServiceActivator(inputChannel = "integration.gateway.loanInfo.channel")
+	public void getObjectMessage(Message<?> message) {
+		System.out.println("inside getObjectMessage service activator ::::");
+		System.out.println(message.getPayload());
+		
+		MessageChannel replyChannel = (MessageChannel)message.getHeaders().getReplyChannel();
+		MessageBuilder.fromMessage(message);
+				
+		replyChannel.send(message);
 	}
 
 }

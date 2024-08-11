@@ -41,6 +41,12 @@ public class Borrower {
 	public void setBorrowerPhone(double borrowerPhone) {
 		this.borrowerPhone = borrowerPhone;
 	}
+
+	@Override
+	public String toString() {
+		return "Borrower [borrowerName=" + borrowerName + ", borrowerEmail=" + borrowerEmail + ", borrowerPhone="
+				+ borrowerPhone + "]";
+	}
 	
 	
 
