@@ -20,12 +20,20 @@ public class AppController {
 	
 	@PostMapping("/processLoan")
 	public LoanInfo processLoan(@RequestBody LoanInfo loan) {
-		return interationGateway.sendMessage(loan);
+		//return interationGateway.sendMessage(loan);
+		
+		interationGateway.process(loan);
+		
+		return loan;
+
 	}
 	
 	@PostMapping("/processBorrower")
 	public String processLoan(@RequestBody Borrower borrower) {
 		System.out.println(borrower.toString());
+		
+		interationGateway.process(borrower);
+
 		
 		return "";
 	}

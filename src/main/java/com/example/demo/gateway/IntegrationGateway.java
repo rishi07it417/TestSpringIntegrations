@@ -10,4 +10,8 @@ public interface IntegrationGateway {
 
 	@Gateway(requestChannel = "integration.gateway.channel")
 	public LoanInfo sendMessage (LoanInfo message);
+	
+	
+	@Gateway(requestChannel = "router.channel")
+	public <T> void process (T message);
 }

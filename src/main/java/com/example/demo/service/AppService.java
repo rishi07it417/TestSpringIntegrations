@@ -46,10 +46,14 @@ public class AppService {
 		System.out.println("inside getObjectMessage service activator ::PAYLOAD::");
 		System.out.println(message.getPayload());
 		
-		MessageChannel replyChannel = (MessageChannel)message.getHeaders().getReplyChannel();
+		/*MessageChannel replyChannel = (MessageChannel)message.getHeaders().getReplyChannel();
 		MessageBuilder.fromMessage(message);
 				
-		replyChannel.send(message);
+		replyChannel.send(message);*/
 	}
+	
+
+	
+	
 
 }
