@@ -9,6 +9,7 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.router.HeaderValueRouter;
 import org.springframework.integration.router.PayloadTypeRouter;
 import org.springframework.integration.router.RecipientListRouter;
 import org.springframework.integration.transformer.HeaderEnricher;
@@ -62,6 +63,18 @@ public class AppConfig {
 		return router;
 	}
 	
+	
+	//Header Value Type Router
+	@Bean
+	@ServiceActivator(inputChannel = "header.payload.router.channel")
+	public HeaderValueRouter headerValueRouter() {
+		HeaderValueRouter router = new HeaderValueRouter("testHeader");
+		router.setChannelMapping("loanInfo","integration.gateway.loanInfo.channel");
+		router.setChannelMapping("borrower", "integration.gateway.borrower.channel");
+		
+		return router;
+	}
+		
 
 	// Transformer And Header Enricher for Loan
 	@Bean
@@ -76,6 +89,7 @@ public class AppConfig {
 		Map<String,HeaderValueMessageProcessor<String>> headerToAdd = new HashMap<String,HeaderValueMessageProcessor<String>>();
 		headerToAdd.put("Loan header 1", new StaticHeaderValueMessageProcessor<String>("Test Loan Header 1"));
 		headerToAdd.put("Loan header 2", new StaticHeaderValueMessageProcessor<String>("Test Loan Header 2"));
+		headerToAdd.put("loanInfo", new StaticHeaderValueMessageProcessor<String>("loanInfo"));
 
 		
 		HeaderEnricher enricher = new HeaderEnricher(headerToAdd);
@@ -83,7 +97,7 @@ public class AppConfig {
 	}
 	
 	@Bean
-	@Transformer(inputChannel = "integration.gateway.objectToMap.channel", outputChannel = "integration.gateway.loanInfo.channel")
+	@Transformer(inputChannel = "integration.gateway.objectToMap.channel", outputChannel = "header.payload.router.channel" )
 	public MapToObjectTransformer mapToObjectTransformer() {
 		return new MapToObjectTransformer(LoanInfo.class);
 	}
@@ -102,6 +116,7 @@ public class AppConfig {
 			Map<String,HeaderValueMessageProcessor<String>> headerToAdd = new HashMap<String,HeaderValueMessageProcessor<String>>();
 			headerToAdd.put("Borrower header 1", new StaticHeaderValueMessageProcessor<String>("Test Borrower Header 1"));
 			headerToAdd.put("Borrower header 2", new StaticHeaderValueMessageProcessor<String>("Test Borrower Header 2"));
+			headerToAdd.put("borrower", new StaticHeaderValueMessageProcessor<String>("borrower"));
 
 			
 			HeaderEnricher enricher = new HeaderEnricher(headerToAdd);
@@ -109,7 +124,7 @@ public class AppConfig {
 		}
 		
 		@Bean
-		@Transformer(inputChannel = "integration.gateway.borrower.objectToMap.channel", outputChannel = "integration.gateway.borrower.channel")
+		@Transformer(inputChannel = "integration.gateway.borrower.objectToMap.channel", outputChannel = "header.payload.router.channel")
 		public MapToObjectTransformer mapToObjectTransformerForBorrower() {
 			return new MapToObjectTransformer(Borrower.class);
 		}
