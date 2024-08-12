@@ -14,4 +14,7 @@ public interface IntegrationGateway {
 	
 	@Gateway(requestChannel = "router.channel")
 	public <T> void process (T message);
+	
+	@Gateway(requestChannel = "router.borrowerRecipient.channel")
+	public <T> void processBorrowers (T message);
 }

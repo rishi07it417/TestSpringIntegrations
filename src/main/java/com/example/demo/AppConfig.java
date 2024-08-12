@@ -10,6 +10,7 @@ import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.router.PayloadTypeRouter;
+import org.springframework.integration.router.RecipientListRouter;
 import org.springframework.integration.transformer.HeaderEnricher;
 import org.springframework.integration.transformer.MapToObjectTransformer;
 import org.springframework.integration.transformer.ObjectToMapTransformer;
@@ -38,7 +39,19 @@ public class AppConfig {
 	}
 	
 	
-	// Router
+	//Recipent List Type Router
+	@Bean
+	@ServiceActivator(inputChannel = "router.borrowerRecipient.channel")
+	public RecipientListRouter recipientListRouter() {
+		RecipientListRouter router = new RecipientListRouter();
+		router.addRecipient("borrower1.channel");
+		router.addRecipient("borrower2.channel");
+
+		
+		return router;
+	}
+	
+	//PayLoad Type Router
 	@Bean
 	@ServiceActivator(inputChannel = "router.channel")
 	public PayloadTypeRouter router() {

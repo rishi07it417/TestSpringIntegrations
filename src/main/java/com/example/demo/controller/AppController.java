@@ -29,13 +29,13 @@ public class AppController {
 	}
 	
 	@PostMapping("/processBorrower")
-	public String processLoan(@RequestBody Borrower borrower) {
+	public Borrower processLoan(@RequestBody Borrower borrower) {
 		System.out.println(borrower.toString());
 		
-		interationGateway.process(borrower);
+		interationGateway.processBorrowers(borrower);
 
 		
-		return "";
+		return borrower;
 	}
 	
 	
