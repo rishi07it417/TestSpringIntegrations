@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.integration.annotation.Filter;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.annotation.Transformer;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.core.MessageSelector;
+import org.springframework.integration.filter.MessageFilter;
 import org.springframework.integration.router.HeaderValueRouter;
 import org.springframework.integration.router.PayloadTypeRouter;
 import org.springframework.integration.router.RecipientListRouter;
@@ -58,11 +61,32 @@ public class AppConfig {
 	public PayloadTypeRouter router() {
 		PayloadTypeRouter router = new PayloadTypeRouter();
 		router.setChannelMapping(LoanInfo.class.getName(),"loanInfo.channel");
-		router.setChannelMapping(Borrower.class.getName(), "borrower.channel");
+		router.setChannelMapping(Borrower.class.getName(), "borrower.filter.channel");
 		
 		return router;
 	}
 	
+	//Filter
+	@Filter(inputChannel ="borrower.filter.channel")
+	@Bean
+	public MessageFilter borrowerFilter() {
+		
+		MessageFilter filter = new MessageFilter(new MessageSelector() {
+			public boolean accept(Message<?> message) {
+				Borrower borrower = (Borrower) message.getPayload();
+				System.out.println("++++++++++++++++++++++++++++++++++++++++++"+borrower.getBorrowerName());
+				if(borrower.getBorrowerName().equals("ABC")) {
+					return false;
+				}else {
+					return true;
+				}
+			}
+		});
+		
+		filter.setOutputChannelName("borrower.channel");
+		
+		return filter;
+	}
 	
 	//Header Value Type Router
 	@Bean

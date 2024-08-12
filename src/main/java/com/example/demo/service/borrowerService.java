@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class borrowerService {
 	
 	//Recipient Channels entry for borrower
-	@ServiceActivator(inputChannel = "borrower1.channel", outputChannel = "borrower.channel")
+	@ServiceActivator(inputChannel = "borrower1.channel", outputChannel = "router.channel")
 	public Message<?> getBorrower1Message(Message<?> message) {
 		System.out.println("inside getBorrower1Message 1 service activator ::::");
 		System.out.println(message);
@@ -21,7 +21,7 @@ public class borrowerService {
 		return message;
 	}
 	
-	@ServiceActivator(inputChannel = "borrower2.channel", outputChannel = "borrower.channel")
+	@ServiceActivator(inputChannel = "borrower2.channel", outputChannel = "router.channel")
 	public Message<?> getBorrower2Message(Message<?> message) {
 		System.out.println("inside getBorrower1Message 2 service activator ::::");
 		System.out.println(message);
@@ -71,6 +71,8 @@ public class borrowerService {
 		System.out.println("inside getObjectMessage service activator for borrower::PAYLOAD::");
 		System.out.println(message.getPayload());
 		
+		System.out.println("=====================END==========================================");
+
 		/*MessageChannel replyChannel = (MessageChannel)message.getHeaders().getReplyChannel();
 		MessageBuilder.fromMessage(message);
 				
