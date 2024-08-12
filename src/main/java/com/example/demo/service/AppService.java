@@ -27,6 +27,11 @@ public class AppService {
 	@ServiceActivator(inputChannel = "integration.gateway.process.objectToMap.channel", outputChannel = "integration.gateway.objectToMap.channel")
 	public Message<?> processMapMessage(Message<?> message) {
 		System.out.println("inside processMapMessage service activator:::::");
+		System.out.println(message);
+
+		
+		System.out.println("inside processMapMessage service activator:::PAYLOAD::");
+
 		System.out.println(message.getPayload());
 		
 		
@@ -36,6 +41,9 @@ public class AppService {
 	@ServiceActivator(inputChannel = "integration.gateway.loanInfo.channel")
 	public void getObjectMessage(Message<?> message) {
 		System.out.println("inside getObjectMessage service activator ::::");
+		System.out.println(message);
+
+		System.out.println("inside getObjectMessage service activator ::PAYLOAD::");
 		System.out.println(message.getPayload());
 		
 		MessageChannel replyChannel = (MessageChannel)message.getHeaders().getReplyChannel();
